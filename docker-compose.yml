@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  url-shortener:
+    build:
+      context: .
+    restart: always
+    environment:
+      GOLANG_ENVIRONMENT: "Development"
+      URL_SHORTENER_REDIS_HOST: "redis:6379"
+    links:
+      - redis
+    depends_on:
+      - redis
+    ports:
+      - "8081:8081"
+      - "5070:5070"
+
+  redis:
+    image: redis:latest
+    restart: always
+    environment:
+      NOTIFY_EVENTS: "KEA"
+    volumes:
+      - redis_data:/redis-data
+    ports:
+      - "6379:6379"
+
+
+volumes:
+  redis_data:
+
